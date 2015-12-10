@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<title>数据库-mongodb权限</title>
+		<!--国产了浏览器的兼容性(webkit:极速模式、ie-comp:兼容模式、ie-stand:ie模式)-->
+		<meta name="renderer" content="webkit"/>
+		<!--ie内核浏览器兼容性-->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<!--字符编码-->
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<!--移动端禁止缩放-->
+	 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+ 		<!--缓存-->
+ 		<!--private、must-revalidate/no-cache/max-age-->
+ 		<meta http-equiv="Cache-Control" content="no-cache"/>
+ 		<meta http-equiv="Pragma" content="no-cache"/>
+		<meta http-equiv="Expires" content="0"/>
+
+		<!--seo优化-->
+	 	<meta name="keywords" content="关键字,关键词,关键短语"/>
+		<meta name="description" content="描述"/>
+		<meta name="robots" content="all"/>
+		<meta name="author" content="Crazy Z"/>
+
+		<!--标签-->
+		<link rel="bookmark" type="image/x-icon" href="images/favicon.ico"/>
+		<link rel="icon" type="image/x-icon" href="images/favicon.ico"/>
+		<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico"/>
+
+		<!--css-->
+		<link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="lib/highlight/styles/monokai_sublime.css">
+		<link rel="stylesheet" type="text/css" href="css/mongodb.css">
+		<!-- js -->
+	 	<script data-main="js/modules/main" src="lib/require/require.js" defer async="true"></script>
+		<!--[if lte IE 8]>
+              <script type="text/javascript" src="js/html5.js"></script>
+        <![endif]-->
+	</head>
+	<body>
+		<div class="container">
+			<div class="content">
+				<section>
+					<article>
+						<h3>创建一个用户</h3>
+						<p>mongoDB 没有炒鸡无敌用户root，只有能“管理用户”的用户 <a href="http://docs.mongodb.org/manual/reference/built-in-roles/#userAdminAnyDatabase">userAdminAnyDatabase</a>。
+						网上有很多资料都使用addUser()方法，但在mongodb3.0之后都使用<a href="http://docs.mongodb.org/manual/reference/method/db.createUser/">creatUser()。</a></p>
+						<pre><code class="code">$ use admin
+$ db.createUser(
+	{
+		"user":"root",
+		"pwd":"root",
+		"roles":[{"role":"userAdminAnyDatabase","db":"admin"}]
+	}
+)</code></pre>
+					</article>
+				
+
+					<article>
+						<h3>查看用户</h3>
+						<pre><code class="code"># 查看用户，两种方法
+$ show users 
+$ db.system.users.find()
+
+# 查看用户结果
+{ "_id" : "admin.root", "user" : "root", "db" : "admin", "credentials" : { "SCRA
+M-SHA-1" : { "iterationCount" : 10000, "salt" : "7eWmznto1bhYMrr8jjsFwg==", "sto
+redKey" : "KbI6gd7JynIM8kUcJqXkw2Z2MMc=", "serverKey" : "fXA5yDP6mhTfZ208RWbrNw6
++duc=" } }, "roles" : [ { "role" : "userAdminAnyDatabase", "db" : "admin" } ] }</code></pre>
+					</article>
+
+
+					<article>
+						<h3>登陆“用户管理”账号</h3>
+						<p>登陆成功后使用$ show collections时依然提示错误，因为登陆后只有“管理用户”权限。还需要继续创建有读、写权限的账号。</p>
+						<pre><code class="code"># 认证，返回1表示成功
+$ use admin
+$ db.auth("root","root")
+
+# 继续创建有读、写权限的用户
+$ use test
+$ db.createUser(
+	{
+		"user":"root",
+		"pwd":"root",
+		"roles":[{ role: "readWrite", db: "test" },{ role: "read", db: "other" }]
+	}
+)
+
+</code></pre>
+					</article>
+
+
+					<article>
+						<h3>开启验证</h3>
+						<p>mongodb默认是不开启权限认证的。</p>
+						<pre><code class="code">Windows：
+# 1.注册表中找到HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\MongoDB
+# 2.修改ImagePath中的参数，在结束双引号与--service中间添加--auth
+# 3.重启mongdb服务
+Linux：
+# 1.
+</code></pre>
+					</article>
+
+
+				</section>
+			</div>
+		</div>
+		<a id="backtop" href="javascript:void(0)"></a>
+	</body>
+</html>
