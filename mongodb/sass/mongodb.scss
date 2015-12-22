@@ -8,6 +8,10 @@
 @import "normalize","common","mixin","variable";
 @import "backtop";
 
+body,a{
+	font-family:$font-family;
+}
+
 .content{
 	h3{
 		font: 18px/2 $font-family;
