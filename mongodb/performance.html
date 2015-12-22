@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 	<head>
-		<title>数据库-mongodb权限</title>
+		<title>数据库-mongodb慢查询</title>
 		<!--国产了浏览器的兼容性(webkit:极速模式、ie-comp:兼容模式、ie-stand:ie模式)-->
 		<meta name="renderer" content="webkit"/>
 		<!--ie内核浏览器兼容性-->
@@ -54,7 +54,7 @@
 			    <div id="bs-navbar-collapse" class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
 						<li><a href="#">首页</a></li>
-						<li class="active"><a href="#">权限<span class="sr-only">(current)</span></a></li>
+						<li><a href="#">权限</a></li>
 						<li><a href="replicaset.html">复制集</a></li>
 						<li class="dropdown">
 						  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">crud<span class="caret"></span></a>
@@ -66,6 +66,13 @@
 						    <li role="separator" class="divider"></li>
 						    <li><a href="#">常见条件</a></li>
 						  </ul>
+						</li>
+						<li class="dropdown active">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">性能<span class="caret"></span><span class="sr-only">(current)</span></a>
+							<ul class="dropdown-menu">
+								<li><a href="#">慢查询</a></li>
+								<li><a href="#">监控</a></li>
+							</ul>
 						</li>
 						<li class="dropdown">
 						  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">driver<span class="caret"></span></a>
@@ -79,72 +86,35 @@
 			</div>
 		</nav>
 
+		
+		
+		
 		<div class="container" style="margin-top:60px;">
 			<div class="content">
 				<section>
 					<article>
-						<h3>创建一个用户</h3>
-						<p>mongoDB 没有炒鸡无敌用户root，只有能“管理用户”的用户 <a href="http://docs.mongodb.org/manual/reference/built-in-roles/#userAdminAnyDatabase">userAdminAnyDatabase</a>。
-						网上有很多资料都使用addUser()方法，但在mongodb3.0之后都使用<a href="http://docs.mongodb.org/manual/reference/method/db.createUser/">creatUser()。</a></p>
-						<pre><code class="code">$ use admin
-$ db.createUser(
-	{
-		"user":"root",
-		"pwd":"root",
-		"roles":[{"role":"userAdminAnyDatabase","db":"admin"}]
-	}
-)</code></pre>
-					</article>
-				
-
-					<article>
-						<h3>查看用户</h3>
-						<pre><code class="code"># 查看用户，两种方法
-$ show users 
-$ db.system.users.find()
-
-# 查看用户结果
-{ "_id" : "admin.root", "user" : "root", "db" : "admin", "credentials" : { "SCRA
-M-SHA-1" : { "iterationCount" : 10000, "salt" : "7eWmznto1bhYMrr8jjsFwg==", "sto
-redKey" : "KbI6gd7JynIM8kUcJqXkw2Z2MMc=", "serverKey" : "fXA5yDP6mhTfZ208RWbrNw6
-+duc=" } }, "roles" : [ { "role" : "userAdminAnyDatabase", "db" : "admin" } ] }</code></pre>
+						<h3>日志</h3>
+						<p>记录到mongodb日志中，通过启动时指定参数-v[--verbose]控制日志级别,值为v、vv、vvv、vvvv、vvvvv，v越多日志越详细。</p>
 					</article>
 
-
 					<article>
-						<h3>登陆“用户管理”账号</h3>
-						<p>登陆成功后使用$ show collections时依然提示错误，因为登陆后只有“管理用户”权限。还需要继续创建有读、写权限的账号。</p>
-						<pre><code class="code"># 认证，返回1表示成功
-$ use admin
-$ db.auth("root","root")
-
-# 继续创建有读、写权限的用户
-$ use test
-$ db.createUser(
-	{
-		"user":"root",
-		"pwd":"root",
-		"roles":[{ role: "readWrite", db: "test" },{ role: "read", db: "other" }]
-	}
-)
-
-</code></pre>
-					</article>
-
-
-					<article>
-						<h3>开启验证</h3>
-						<p>mongodb默认是不开启权限认证的。</p>
+						<h3>profile--慢查询</h3>
+						<p>记录到数据库中，</p>
 						<pre><code class="code">Windows：
 # 1.注册表中找到HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\MongoDB
 # 2.修改ImagePath中的参数，在结束双引号与--service中间添加--auth
 # 3.重启mongdb服务
 Linux：
-# mongod启动时添加--auth参数或在启动配置文件中指定auth=true
+# 1.
 </code></pre>
 					</article>
 
-
+					<article>
+						<h3>explain</h3>
+						<p>单次查询find()后接.explain()</p>
+						<pre><code class="code">> db.test.find().explain()
+</code></pre>
+					</article>
 				</section>
 			</div>
 		</div>
