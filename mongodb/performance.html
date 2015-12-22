@@ -91,26 +91,52 @@
 				<section>
 					<article>
 						<h3>日志</h3>
-						<p>记录到mongodb日志中，通过启动时指定参数-v[--verbose]控制日志级别,值为v、vv、vvv、vvvv、vvvvv，v越多日志越详细。</p>
+						<p>通过启动时指定参数-v[--verbose]控制日志级别,值为v、vv、vvv、vvvv、vvvvv，v越多日志越详细（记录到mongodb日志中）。</p>
+					</article>
+
+					<article>
+						<h3>explain--单次解析</h3>
+						<p>单次查询find()后接.explain()。</p>
+						<pre><code class="code">> db.test.find().explain()
+</code></pre>
 					</article>
 
 					<article>
 						<h3>profile--慢查询</h3>
-						<p>记录到数据库中，</p>
-						<pre><code class="code">Windows：
-# 1.注册表中找到HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\MongoDB
-# 2.修改ImagePath中的参数，在结束双引号与--service中间添加--auth
-# 3.重启mongdb服务
-Linux：
-# 1.
-</code></pre>
+						<p>查询profile级别（记录到数据库中，表system.profile），profile有三个级别（0-关闭/1-超过slowms毫秒的查询/2-所有查询）。</p>
+						<pre><code class="code">> db.getProfilingStatus()
+{ "was" : 0, "slowms" : 100 }</code></pre>
+
+						<p>设置profile级别。</p>
+						<pre><code class="code">> db.setProfilingLevel(1)
+{ "was" : 0, "slowms" : 100, "ok" : 1 }</code></pre>
+
+						<p>设置slowms(mongod启动参数)。</p>
+						<pre><code class="code">$ ./mongod --slowms arg (=100)</code></pre>
 					</article>
 
 					<article>
-						<h3>explain</h3>
-						<p>单次查询find()后接.explain()</p>
-						<pre><code class="code">> db.test.find().explain()
-</code></pre>
+						<h3>mongostat--实时监控</h3>
+						<p>连接参数。</p>
+						<pre><code class="code">$ ./mongostat [options] args
+#别名   options     args
+-h      --host      hostname
+        --port      port
+-u      --username  username
+-p      --password  password</code></pre>
+
+						<p>执行结果，其中insert代表每秒插入多少条数据,qr|qw代表读|写队列。</p>
+						<pre><code class="css">insert query update delete getmore command % dirty % used flushes  vsize   res qr|qw ar|aw netIn netOut conn                      time
+*0    *0     *0     *0       0     1|0     0.0    0.0       0 364.0M 70.0M   0|0   0|0   79b    18k    1 2015-12-23T00:05:12+08:00
+*0    *0     *0     *0       0     1|0     0.0    0.0       0 364.0M 70.0M   0|0   0|0   79b    18k    1 2015-12-23T00:05:13+08:00
+*0    *0     *0     *0       0     1|0     0.0    0.0       0 364.0M 70.0M   0|0   0|0   79b    18k    1 2015-12-23T00:05:14+08:00
+*0    *0     *0     *0       0     1|0     0.0    0.0       0 364.0M 70.0M   0|0   0|0   79b    18k    1 2015-12-23T00:05:15+08:00
+*0    *0     *0     *0       0     2|0     0.0    0.0       0 364.0M 70.0M   0|0   0|0  133b    18k    1 2015-12-23T00:05:16+08:00
+*0    *0     *0     *0       0     1|0     0.0    0.0       0 364.0M 70.0M   0|0   0|0   79b    18k    1 2015-12-23T00:05:17+08:00
+*0    *0     *0     *0       0     1|0     0.0    0.0       0 364.0M 70.0M   0|0   0|0   79b    18k    1 2015-12-23T00:05:18+08:00
+*0    *0     *0     *0       0     1|0     0.0    0.0       0 364.0M 70.0M   0|0   0|0   79b    18k    1 2015-12-23T00:05:19+08:00
+*0    *0     *0     *0       0     1|0     0.0    0.0       0 364.0M 70.0M   0|0   0|0   79b    18k    1 2015-12-23T00:05:20+08:00
+*0    *0     *0     *0       0     2|0     0.0    0.0       0 364.0M 70.0M   0|0   0|0  133b    18k    1 2015-12-23T00:05:21+08:00</code></pre>
 					</article>
 				</section>
 			</div>
