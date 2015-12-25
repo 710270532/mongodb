@@ -256,11 +256,23 @@ MONGODB:PRIMARY>rs.status()
 
 					<article>
 						<h3>删除复制集</h3>				
-						<p>去掉mongod.conf配置文件中replSet属性，启动mongod，并连接到mongodb shell，对其它server执行相同操作</p>
+						<p>去掉mongod.conf配置文件中replSet属性，启动mongod，并连接到mongodb shell，对其它server执行相同操作。</p>
 						<pre><code class="css">> use local
 > db.system.replset.remove({})
 WriteResult({ "nRemoved" : 1 })</code></pre>
-</article>
+					</article>
+
+					<article>
+						<h3>复制集配置参数</h3>				
+						<p></p>
+						<pre><code class="css">priority 0 | 至少为1，默认为1，为0时表示该节点不能转换为主节点。
+hidden false | true ，默认为false，不会被驱动所发现，driver通过使用$ rs.isMaster()命令查找可用节点。
+slaveDelay second，默认单位为秒，设置延迟节点。
+buildIndexes true | false，默认为true，是否复制主节点索引。
+votes: 0 | 1,默认为1，设置是否具有投票功能。
+注意：隐藏节点、延迟节点、无索引节点配置前提是priority为0。</code></pre>
+					</article>
+
 				</section>
 			</div>
 		</div>
