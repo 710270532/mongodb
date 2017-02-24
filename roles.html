@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<title>数据库-内置用户角色</title>
+		<!--国产了浏览器的兼容性(webkit:极速模式、ie-comp:兼容模式、ie-stand:ie模式)-->
+		<meta name="renderer" content="webkit"/>
+		<!--ie内核浏览器兼容性-->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<!--字符编码-->
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<!--移动端禁止缩放-->
+	 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+ 		<!--缓存-->
+ 		<!--private、must-revalidate/no-cache/max-age-->
+ 		<meta http-equiv="Cache-Control" content="no-cache"/>
+ 		<meta http-equiv="Pragma" content="no-cache"/>
+		<meta http-equiv="Expires" content="0"/>
+
+		<!--seo优化-->
+	 	<meta name="keywords" content="mongo,mongodb"/>
+		<meta name="description" content="mongodb"/>
+		<meta name="robots" content="all"/>
+		<meta name="author" content="zhanghongwei"/>
+
+		<!--标签-->
+		<link rel="bookmark" type="image/x-icon" href="images/favicon.ico"/>
+		<link rel="icon" type="image/x-icon" href="images/favicon.ico"/>
+		<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico"/>
+
+		<!--css-->
+		<link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="lib/highlight/styles/monokai_sublime.css">
+		<link rel="stylesheet" type="text/css" href="css/mongodb.css">
+
+
+		<style type="text/css">
+			article.top{
+				margin-top: 80px;
+			}
+			tr>td.width{
+				width: 216px;
+			}
+		</style>
+		<!-- js -->
+	 	<script data-main="js/modules/main" src="lib/require/require.js" defer async="true"></script>
+		<!--[if lte IE 8]>
+              <script type="text/javascript" src="js/html5.js"></script>
+        <![endif]-->
+
+	</head>
+	<body>
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse" aria-expanded="false">
+				        <span class="sr-only">Toggle navigation</span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				        <span class="icon-bar"></span>
+				    </button>
+			      	<a class="navbar-brand" href="#" style="padding:5px;padding-right:20px;"><img alt="Brand" src="images/logo.png" style="width:111px;height:40px;" /></a>
+			    </div>
+
+			    <div id="bs-navbar-collapse" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="index.html">首页</a></li>
+						<li><a href="replicaset.html">复制集</a></li>
+						<li class="dropdown active" >
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">安全<span class="caret"></span><span class="sr-only">(current)</span></a>
+							<ul class="dropdown-menu">
+								<li><a href="auth.html">权限</a></li>
+								<li><a href="#">安全级别</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">性能<span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="performance.html">慢查询</a></li>
+								<li><a href="#">监控</a></li>
+							</ul>
+						</li>
+						<li class="dropdown">
+						  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">crud<span class="caret"></span></a>
+						  <ul class="dropdown-menu">
+						    <li><a href="#">插入</a></li>
+						    <li><a href="remove.html">删除</a></li>
+						    <li><a href="#">查找</a></li>
+						    <li><a href="#">更新</a></li>
+						    <li role="separator" class="divider"></li>
+						    <li><a href="#">常见条件</a></li>
+						  </ul>
+						</li>
+						<li class="dropdown">
+						  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">driver<span class="caret"></span></a>
+						  <ul class="dropdown-menu">
+						    <li><a href="#">java</a></li>
+						    <li><a href="#">python</a></li>
+						  </ul>
+						</li>
+					</ul>
+			    </div>
+			</div>
+		</nav>
+		<div class="container" style="margin-top:60px;">
+			<div class="content">
+				<p>
+					<a href="https://docs.mongodb.com/manual/core/security-built-in-roles/#database-user-roles">官网参考资料</a>
+					<a href="https://www.asni.cn/1525">网友参考资料</a>
+				</p>
+				<section>
+					<article>
+						<h3>用户角色</h3>
+						<table class="table">
+							<thead>
+								<tr class="active">
+									<th>角色</th>
+									<th>描述</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="width">read(只读)</td>
+									<td>
+										<p>该角色提供了读取所有非系统集合（collection）和以下系统集合（collections）: system.indexes, system.js, system.namespaces collections的权限。</p>
+										<p>查看该角色具体的权限<a href="https://docs.mongodb.com/manual/reference/built-in-roles/#read">read</a></p>
+									</td>
+								</tr>
+								<tr>
+									<td class="width">readWrite(读写)</td>
+									<td>
+										<p>拥有read权限的所有权限，同时还提供了修改非系统集合（collection）和system.js集合的权限。</p>
+										<p>查看该角色具体的权限<a href="https://docs.mongodb.com/manual/reference/built-in-roles/#readWrite">readWrite</a></p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</article>
+				
+
+					<article class="top">
+						<h3>管理角色</h3>
+						<table class="table">
+							<thead>
+								<tr class="active">
+									<th>角色</th>
+									<th>描述</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="width">dbAdmin</td>
+									<td>
+										<p>提供执行管理任务的能力，例如：与架构（schema-related）相关的任务、索引（index）、收集统计信息（gathering statistics），此角色不授予用户和角色管理权限。</p>
+										<p>查看该角色具体的权限<a href="https://docs.mongodb.com/manual/reference/built-in-roles/#dbAdmin">dbAdmin</a></p>
+									</td>
+								</tr>
+								<tr>
+									<td class="width">dbOwner</td>
+									<td>
+										<p>提供在数据库上执行任何管理操作的能力,该角色提供了包含readWrite, dbAdmin和userAdmin的所有权限。</p>
+									</td>
+								</tr>
+								<tr>
+									<td class="width">userAdmin</td>
+									<td>
+										<p>提供在当前数据库上创建和修改角色和用户的能力。</p>
+										<p>由于该角色语序给任何用户赋予任何权限，也包括本身，所以该角色也间接提供了访问管理权限、集群权限的数据库的能力。</p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</article>
+
+
+					<article class="top">
+						<h3>集群管理角色</h3>
+						<table class="table">
+							<thead>
+								<tr class="active">
+									<th>角色</th>
+									<th>描述</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="width">clusterAdmin</td>
+									<td>
+										<p>提供最大的群集管理访问权限,提供了包含clusterManager, clusterMonitor和hostManager角色的所有权限。</p>
+										<p>此外，该角色提供了删除数据库（<a href="https://docs.mongodb.com/manual/reference/privilege-actions/#authr.dropDatabase">dropDatabase</a> ）的能力。</p>
+									</td>
+								</tr>
+								<tr>
+									<td class="width">clusterManager</td>
+									<td>
+										<p>提供在集群上的管理和监控权限，拥有此角色的用户可以访问配置和本地数据库，进行分片（sharding）和复制集（replication），分别（respectively）。
+										<p>查看该角色具体的权限<a href="https://docs.mongodb.com/manual/reference/built-in-roles/#clusterManager">clusterManager</a>。</p>
+									</td>
+								</tr>
+								<tr>
+									<td class="width">clusterMonitor</td>
+									<td>
+										<p>提供监控工具进行只读访问，例如 <a href="https://www.mongodb.com/cloud/cloud-manager/?jmp=docs&_ga=1.186279648.856334846.1483687791">MongoDB Cloud Manager</a>、<a href="https://docs.opsmanager.mongodb.com/current/?_ga=1.186279648.856334846.1483687791">Ops Manager</a>监控。</p>
+										<p>查看该角色具体的权限<a href="https://docs.mongodb.com/manual/reference/built-in-roles/#clusterMonitor">clusterMonitor</a>。</p>
+									</td>
+								</tr>
+								<tr>
+									<td class="width">hostManager</td>
+									<td>
+										<p>提供了监控和管理服务的能力。</p>
+										<p>查看该角色具体的权限<a href="https://docs.mongodb.com/manual/reference/built-in-roles/#hostManager">hostManager</a>。</p>
+										
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</article>
+
+
+					<article class="top">
+						<h3>备份和恢复角色</h3>
+						<table class="table">
+							<thead>
+								<tr class="active">
+									<th>角色</th>
+									<th>描述</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="width">backup</td>
+									<td>
+										<p>该角色提供了备份数据所需要的权限，该角色提供了足够的权限来使用<a href="https://www.mongodb.com/cloud/cloud-manager/?jmp=docs&_ga=1.248808398.856334846.1483687791">MongoDB Cloud Manager</a>、 <a href="https://docs.opsmanager.mongodb.com/current/?_ga=1.85749328.856334846.1483687791">Ops Manager</a>、<a href="https://docs.mongodb.com/manual/reference/program/mongodump/#bin.mongodump">mongodump</a>的备份功能。</p>
+										<p>查看该角色具体的权限<a href="https://docs.mongodb.com/manual/reference/built-in-roles/#backup">backup</a>。</p>
+									</td>
+								</tr>
+								<tr>
+									<td class="width">restore</td>
+									<td>
+										<p>该角色提供了不使用<a href="https://docs.mongodb.com/manual/reference/program/mongorestore/#cmdoption-oplogreplay">--oplogReplay</a>参数或不是system.profile集合的<a href="https://docs.mongodb.com/manual/reference/program/mongorestore/#bin.mongorestore">mongorestore</a>命令所需要的权限。</p>
+										<p>查看该角色具体的权限<a href="https://docs.mongodb.com/manual/reference/built-in-roles/#restore">restore</a>。</p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</article>
+					
+					
+					<article class="top">
+						<h3>所有数据库角色</h3>
+						<table class="table">
+							<thead>
+								<tr class="active">
+									<th>角色</th>
+									<th>描述</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="width">readAnyDatabase</td>
+									<td>
+										Provides the same read-only permissions as read, except it applies to all but the local and config databases in the cluster. The role also provides the listDatabases action on the cluster as a whole.
+
+For the specific privileges granted by the role, see readAnyDatabase.
+
+Changed in version 3.4: Prior to 3.4, readAnyDatabase includes local and config databases. To provide read privileges on the local database, create a user in the admin database with read role in the local database. See also clusterManager role for access to the config and local databases.
+									</td>
+								</tr>
+								<tr>
+									<td class="width">readWriteAnyDatabase</td>
+									<td>
+										Provides the same read and write permissions as readWrite, except it applies to all but the local and config databases in the cluster. The role also provides the listDatabases action on the cluster as a whole.
+
+For the specific privileges granted by the role, see readWriteAnyDatabase.
+
+Changed in version 3.4: Prior to 3.4, readWriteAnyDatabase includes local and config databases. To provide readWrite privileges on the local database, create a user in the admin database with readWrite role in the local database. See also clusterManager role for access to the config and local databases.
+									</td>
+								</tr>
+								<tr>
+									<td class="width">userAdminAnyDatabase</td>
+									<td>
+										Provides the same access to user administration operations as userAdmin, except it applies to all but the local and config databases in the cluster.
+
+Since the userAdminAnyDatabase role allows users to grant any privilege to any user, including themselves, the role also indirectly provides superuser access.
+
+For the specific privileges granted by the role, see userAdminAnyDatabase.
+
+Changed in version 3.4: Prior to 3.4, userAdminAnyDatabase includes local and config databases.
+									</td>
+								</tr>
+								<tr>
+									<td class="width">dbAdminAnyDatabase</td>
+									<td>
+										Provides the same access to database administration operations as dbAdmin, except it applies to all but the local and config databases in the cluster. The role also provides the listDatabases action on the cluster as a whole.
+
+For the specific privileges granted by the role, see dbAdminAnyDatabase.
+
+Changed in version 3.4: Prior to 3.4, dbAdminAnyDatabase includes local and config databases. To provide dbAdmin privileges on the local database, create a user in the admin database with dbAdmin role in the local database. See also clusterManager role for access to the config and local databases.
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</article>
+
+					<article class="top">
+						<h3>超级用户角色</h3>
+						<table class="table">
+							<thead>
+								<tr class="active">
+									<th>角色</th>
+									<th>描述</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="width">root</td>
+									<td>
+										<p>该角色提供了包含readWriteAnyDatabase, dbAdminAnyDatabase, userAdminAnyDatabase, clusterAdmin, restore和backup的所有权限。</p>
+										<p>查看该角色具体的权限<a href="https://docs.mongodb.com/manual/reference/built-in-roles/#root">root</a></p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</article>
+
+					<article class="top">
+						<h3>内部角色</h3>
+						<table class="table">
+							<thead>
+								<tr class="active">
+									<th>角色</th>
+									<th>描述</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="width">__system</td>
+									<td>
+										<p>该角色提供对数据库中任何对象采取任何操作的权限。</p>
+
+										<p>除特殊情况外，不要将此角色分配给应用程序或管理人员。</p>
+
+										<p>查看更多信息<a href="https://docs.mongodb.com/manual/reference/built-in-roles/#read">root</a></p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</article>
+
+						
+
+				</section>
+			</div>
+		</div>
+		<a id="backtop" href="javascript:void(0)"></a>
+	</body>
+</html>
