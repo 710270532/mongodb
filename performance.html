@@ -100,14 +100,14 @@
 						<p>通过启动时指定参数-v[--verbose]控制日志级别,值为v、vv、vvv、vvvv、vvvvv，v越多日志越详细（记录到mongodb日志中）。</p>
 					</article>
 
-					<article>
+					<article style="margin-top:28px;">
 						<h3>explain--单次解析</h3>
-						<p>单次查询find()后接.explain()。</p>
-						<pre><code class="code">> db.test.find().explain()
+						<p>单次查询find()后接.explain()。mongodb 3.0之后修更新了explain()方法，可传入不同参数查找，<a target="_blank" href="https://docs.mongodb.com/v3.0/reference/method/cursor.explain/">参考资料</a></p>
+						<pre><code class="code">> db.test.find().explain() --可选参数queryPlanner、executionStats、allPlansExecution
 </code></pre>
 					</article>
 
-					<article>
+					<article style="margin-top:28px;">
 						<h3>profile--慢查询</h3>
 						<p>查询profile级别（记录到数据库中，表system.profile），profile有三个级别（0-关闭/1-超过slowms毫秒的查询/2-所有查询）。</p>
 						<pre><code class="code">> db.getProfilingStatus()
@@ -121,7 +121,7 @@
 						<pre><code class="code">$ ./mongod --slowms arg (=100)</code></pre>
 					</article>
 
-					<article>
+					<article style="margin-top:28px;">
 						<h3>mongostat--实时监控</h3>
 						<p>连接参数。</p>
 						<pre><code class="code">$ ./mongostat [options] args
