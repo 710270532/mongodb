@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 	<head>
-		<title>数据库-mongodb首页</title>
+		<title>数据库-mongodb慢查询</title>
 		<!--国产了浏览器的兼容性(webkit:极速模式、ie-comp:兼容模式、ie-stand:ie模式)-->
 		<meta name="renderer" content="webkit"/>
 		<!--ie内核浏览器兼容性-->
@@ -53,9 +53,9 @@
 
 			    <div id="bs-navbar-collapse" class="collapse navbar-collapse">
 					<ul class="nav navbar-nav">
-						<li class="active"><a href="#">首页</a><span class="sr-only">(current)</span></li>
+						<li><a href="index.html">首页</a></li>
 						<li><a href="replicaset.html">复制集</a></li>
-						<li class="dropdown">
+						<li class="dropdown active" >
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">安全<span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li><a href="auth.html">权限</a></li>
@@ -64,9 +64,9 @@
 							</ul>
 						</li>
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">性能<span class="caret"></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">性能<span class="caret"></span><span class="sr-only">(current)</span></a>
 							<ul class="dropdown-menu">
-								<li><a href="performance.html">慢查询</a></li>
+								<li><a href="#">慢查询</a></li>
 								<li><a href="#">监控</a></li>
 							</ul>
 						</li>
@@ -92,5 +92,74 @@
 			    </div>
 			</div>
 		</nav>
+		
+		<div class="container" style="margin-top:60px;">
+			<div class="content">
+				<section>
+					<article>
+						<h3>1.mongodump与mongorestore</h3>
+						<p>例：将server0:27017/admin数据库下的user表，按注册时间大于等于1488297600000（unix时间戳）的查询条件，将匹配的数据备份到/tmp/mongodump/目录下,并将数据恢复到本机mongodb数据库里。</p>
+						<pre><code class="mongodb">#备份
+$ ./mongodump -h server0 --port 27017 -d admin -c user -q '{registerTime:{"$gte":1488297600000}}' -u test -p test -o /tmp/mongodump/
+
+#/tmp/mongodump/目录下生成的文件默认以数据库名称命名文件夹，表名称命名.bson文件，同时生成.meta.json的索引文件。
+$ ls /tmp/mongodump/admin/
+user.bson  user.metadata.json
+
+#恢复
+$ ./mongorestore -h 127.0.0.1 --port 27017 -d admin -c user -u test -p test /tmp/mongodumo/admin/user.bson
+connected to: 127.0.0.1:27017
+2017-04-01T16:09:00.810+0800 	/tmp/mongodump/admin/user.bson
+2017-04-01T16:09:00.810+0800 	going into namespace [admin.user]
+Restoring to admin.user without dropping. Restored data will be inserted without raising errors; check your server log
+68000 objects found
+2017-04-01T16:09:00.877+0800 	Creating index: { key: { _id: 1 }, ns: "admin.user", name: "_id_" }
+2017-04-01T16:09:01.101+0800 	Creating index: { key: { username: 1, registerTime: 1 }, ns: "admin.user", name: "username_1_registerTime_1" }
+</code></pre>
+
+<p>常用参数列表（1-1）：</p>
+<pre><code class="mongodb">$ ./mongodump --help
+-h [ --host ]      mongodb所在服务器
+--port             mongodb所在服务器端口
+-u [ --username ]  username
+-p [ --password ]  password
+-d [ --db ]        database实例
+-c [ --collection ]collection实例
+-o [ --out ]       备份文件输出文件夹路径
+-q [ --query ]     查询条件
+
+$ ./mongorestore --help
+--drop             恢复的时候，先删除当前数据，然后恢复备份的数据
+-h [ --host ]      mongodb所在服务器
+--port             mongodb所在服务器端口
+-u [ --username ]  username
+-p [ --password ]  password
+-d [ --db ]        database实例
+-c [ --collection ]collection实例
+
+
+</code></pre>
+
+					<article style="margin-top:28px;">
+						<h3>2.mongoexport与mongoimport</h3>
+						<p>常用参数与mongodump、mongorestore一致（参见常用参数列表（1-1）），但多了一些参数，如下：</p>
+						<pre><code class="code">$ ./mongoexport --help
+--csv              输出.csv文件代替.json文件
+</code></pre>
+					</article>
+
+
+
+					<article style="margin-top:28px;">
+						<h3>两种备份方法的区别</h3>
+						<p>1.mongodump可以备份整个数据库，而mongoexport只能备份collection级别。</p>
+						<p>2.mongodump输出的是.bson文件，而mongoexport输出的是.json文件（或指定其它类型，如.csv）,mongoexport的阅读性更好且易修改。</p><br/><br/>
+
+					</article>
+
+				</section>
+			</div>
+		</div>
+		<a id="backtop" href="javascript:void(0)"></a>
 	</body>
 </html>
